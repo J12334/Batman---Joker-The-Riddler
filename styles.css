@@ -1,0 +1,552 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+    /* color: #ffffff; */
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', Arial, Helvetica, sans-serif;
+  }
+  
+  body {
+    background-color: hsl(240, 3%, 7%);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    /* padd */
+    font-size: clamp(.5rem, 2.5vmin, 1.5rem);
+    align-items: center;
+    position: relative;
+
+  }
+
+  .game{
+    background-color: hsl(240, 3%, 7%);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    /* padd */
+    font-size: clamp(.5rem, 2.5vmin, 1.5rem);
+    align-items: center;
+    animation: grow 1500ms forwards;
+  }
+
+  .titleh-container{
+    min-width: 65vw;
+    color: white;
+    display: flex;
+    /* flex-direction: column; */
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border-bottom: solid 1px #3a3a3c;
+    margin-bottom: 1rem;
+    gap: 3rem;
+  }
+
+  .titleh-container h1{
+    /* width: 510px; */
+    padding: 0;
+     margin: 1rem;
+  }
+  
+  
+  .keyboard {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(auto, 1.65em));
+    grid-auto-rows: 2.5em;
+    gap: .25em;
+    justify-content: center;
+    padding-bottom: 2.5rem;
+  }
+  
+  .key {
+    font-size: inherit;
+    grid-column: span 2;
+    border: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: hsl(210, 1%, 51%);
+    color: white;
+    fill: white; /*svg ko white karneme help kar raha*/
+    text-transform: uppercase;
+    border-radius: .25em;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  #del{
+    grid-column: span 4;
+  }
+
+  .key.large {
+    grid-column: span 12;
+  }
+  
+  .key > svg {
+    width: 1.75em;
+    height: 1.75em;
+  }
+  
+  .key:hover, .key:focus {
+    background-color: hsl(210, 5%, 61%);
+  }
+  
+  .key.red {
+    background-color: rgb(255, 255, 255);
+  }
+
+  .key.orange {
+    background-color: orangered;
+  }
+
+  .key.yellow {
+    background-color: yellow;
+  }
+  
+  .key.correct {
+    background-color: rgb(83,141,78);
+  }
+  
+  .guess-grid {
+    display: grid;
+    /* justify-content: center;
+    align-content: center; */
+    justify-content: flex-start;
+    align-content: flex-start;
+    flex-grow: 0.1;
+    grid-template-columns: repeat(5, 3.5em);
+    grid-template-rows: repeat(6, 3.5em);
+    gap: .5em;
+    margin-bottom: 1em;
+  }
+  
+  .tile {
+    font-size: 1.4em;
+    color: white;
+    border: .07em solid hsl(240, 2%, 23%);
+    text-transform: uppercase;
+    /* font-weight: bold; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    transition: transform 170ms linear;
+  }
+  
+  .tile[data-state="active"] {
+    border-color: hsl(200, 1%, 34%);
+  }
+  
+  .tile[data-state="red"] {
+    border: none;
+    background-color: rgb(255, 255, 255);
+    color: black;
+  }
+  
+  .tile[data-state="yellow"] {
+    border: none;
+    background-color: yellow;
+    color: black;
+  }
+
+  .tile[data-state="orange"] {
+    border: none;
+    background-color: orangered;
+    color: black;
+  }
+
+  .tile[data-state="correct"] {
+    border: none;
+    background-color: hsl(115, 29%, 43%);
+  }
+  
+  .tile.shake {
+    animation: shake 250ms ease-in-out;
+  }
+  
+  .tile.dance {
+    animation: dance 500ms ease-in-out;
+  }
+  
+  .tile.flip {
+    transform: rotateY(90deg);
+  }
+  
+  @keyframes shake {
+    10% {
+      transform: translateX(-5%);
+    }
+  
+    30% {
+      transform: translateX(5%);
+    }
+  
+    50% {
+      transform: translateX(-7.5%);
+    }
+  
+    70% {
+      transform: translateX(7.5%);
+    }
+  
+    90% {
+      transform: translateX(-5%);
+    }
+  
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes dance {
+    20% {
+      transform: translateY(-50%);
+    }  
+  
+    40% {
+      transform: translateY(5%);
+    }  
+  
+    60% {
+      transform: translateY(-25%);
+    }  
+  
+    80% {
+      transform: translateY(2.5%);
+    }  
+  
+    90% {
+      transform: translateY(-5%);
+    }  
+  
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  
+  .alert-container {
+    position: fixed;
+    top: 10vh;
+    left: 50vw;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .alert {
+    pointer-events: none;
+    background-color: hsl(204, 7%, 85%);
+    padding: .75em;
+    border-radius: .25em;
+    /* opacity: 1; */
+    background-color: black;
+    transition: opacity 500ms ease-in-out;
+    margin-bottom: .5em;
+    color: whitesmoke;
+  }
+  
+  .alert:last-child {
+    margin-bottom: 0;
+  }
+  
+  .alert.hide {
+    opacity: 0;
+  }
+
+
+
+
+/* //Instructions */
+
+
+
+div.instructions{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column; 
+    /* justify-content: center; */
+    align-items: center;
+    background-color: hsl(240, 3%, 7%);
+    /* margin-top: 1rem; */
+    background-image: url(./ba.jpg);
+    background-size: cover;
+    background-position: top;
+    animation: grow 1500ms forwards;
+}
+
+#greentxt{
+    background-color: black;
+    color: rgb(83,141,78);
+}
+
+#blacktxt{
+    background-color: black;
+    /* color: rgb(83,141,78); */
+}
+
+div.story{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: whitesmoke;
+    font-weight: bold;
+    font-size: larger;
+}
+
+div.hints{
+  
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: space-evenly;
+    
+
+}
+
+div.boxes{
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+
+}
+
+div.meaning{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: whitesmoke;
+    /* font-weight: bold; */
+    font-size: larger;
+    /* background-color: black; */
+}
+
+div.box {
+    width: 5rem;
+    height: 5rem;
+    /* background-color: grey; */
+    margin: 1rem;
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: black;
+    /* font-size: larger; */
+    font-size: xx-large;
+}
+
+
+div.whiteb{
+    background-color: whitesmoke;
+}
+
+div.orangeb{
+    background-color: orangered;
+}
+div.yellowb{
+    background-color: yellow;
+}
+div.greenb{
+    background-color: rgb(83,141,78);
+}
+
+
+div.goback{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: 5rem; */
+  color: whitesmoke;
+}
+
+
+
+
+/* MENU */
+div.menu{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    background-color: hsl(240, 3%, 7%);
+    /* margin-top: 1rem; */
+    background-image: url(./batman_arkham2.jpg);
+    background-size: cover;
+    background-position: bottom;
+    gap: 2rem;
+    animation: grow 1500ms forwards;
+}
+
+div.menuinner{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  /* animation: grow 1500ms forwards; */
+}
+
+@keyframes grow{
+  from{
+     opacity: 0;
+  }
+  to{
+     opacity: 100%;
+  }
+}
+
+button.sbn, select.leveloptions{
+  width: 9rem;
+  height: 3rem;
+  font-size: 1rem;
+  background-color: hsl(210, 1%, 51%);
+  border-radius: 0.5rem;
+  background-color: black;
+  color: whitesmoke;
+  border-color: whitesmoke;
+}
+
+button.sbn:hover, select.leveloptions:hover{
+  background-color: whitesmoke;
+  color: black;
+  cursor: pointer;
+  border-color: black;
+  
+}
+
+button.goback:hover{
+  background-color: black;
+  color: whitesmoke;
+  cursor: pointer;
+}
+
+/* select.leveloptions{
+  width: 9rem;
+  height: 3rem;
+  font-size: 15px;
+  background-color: hsl(210, 1%, 51%);
+  border-radius: 0.5rem;
+  background-color: black;
+  color: whitesmoke;
+  border-color: whitesmoke;
+}
+
+select.leveloptions:hover{
+  background-color: whitesmoke;
+  color: black;
+  cursor: pointer;
+  border-color: black;
+  
+} */
+
+
+
+div.invisible{
+  display: none;
+}
+
+.gameInfo{
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  /* background-color: rgba(0,0,0,0.8); */
+}
+
+
+.gameEnd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 600px;
+  height: 350px;
+  z-index: 999;
+  margin: 5% auto auto auto;
+}
+
+.gameEnd > div {
+ height: 80%;
+ width: 50%;
+ border: 1px solid #fff;
+}
+
+.showInfo {
+  color : #fff;
+  font-size: 1.5rem;
+  margin:0px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.actionButtons > button {
+  padding:0.5rem;
+  border: 1px solid #fff;
+  border-radius: .25rem;
+  background-color: black;
+  color: #fff;
+  cursor: pointer;
+  margin:0.3rem;
+
+}
+
+.demo {
+  height: 100%;
+}
+
+
+
+@media (max-width : 720px) {
+    .demo{
+      display: grid;
+      align-content: center;
+    }
+
+    .gameEnd{
+      flex-direction: column;
+      width: 100%;
+      height: auto;
+      margin: auto;
+    }
+
+    .gameEnd > div {
+      width: 80%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
